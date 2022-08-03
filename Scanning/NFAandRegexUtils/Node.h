@@ -28,7 +28,6 @@ public:
     void addEpsilonTransition(Node* transitionState);
     vector<Node*> getEpsilonTransitionStates();
 
-    void setIdentifier(unsigned int newId);
     unsigned int getIdentifier() const;
 };
 

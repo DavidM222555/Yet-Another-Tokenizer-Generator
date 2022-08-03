@@ -13,5 +13,7 @@ int main() {
 
     std::cout << scanString(nfa, "abbbbbcdee") << std::endl;
 
+    NFA::cleanUpStaticNodes();
+
     return 0;
 }

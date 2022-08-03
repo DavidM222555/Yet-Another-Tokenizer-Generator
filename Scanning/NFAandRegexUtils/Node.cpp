@@ -3,7 +3,6 @@
 //
 
 #include "Node.h"
-#include <iostream>
 
 Node::Node(unsigned int identifier) {
     this->identifier = identifier;
@@ -30,10 +29,6 @@ vector<Node*> Node::getTransitionStates(char transChar) {
     }
 
     return {};
-}
-
-void Node::setIdentifier(unsigned int newID) {
-    this->identifier = newID;
 }
 
 unsigned int Node::getIdentifier() const {
