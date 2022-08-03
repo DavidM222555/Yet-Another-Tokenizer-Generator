@@ -53,10 +53,6 @@ NFA NFA::unionedNFA(NFA nfa1, NFA nfa2) {
     unionedNFA.startState = newStartState;
     unionedNFA.acceptState = newAcceptState;
 
-    // Add all the states from nfa1 and nfa2 to the returnNFA
-
-//    unionedNFA.addNodes(nfa1.getStates());
-//    unionedNFA.addNodes(nfa2.getStates());
 
     // Connect the new start state to the start states of nfa1 and nfa2
     newStartState->addEpsilonTransition(nfa1.getStartState());
@@ -71,10 +67,6 @@ NFA NFA::unionedNFA(NFA nfa1, NFA nfa2) {
 
 NFA NFA::concatenatedNFA(NFA nfa1, NFA nfa2) {
     NFA concatenatedNFA;
-
-    // Add all the nodes from nfa1 and nfa2 to the concatenated NFA
-    // concatenatedNFA.addNodes(nfa1.getStates());
-    // concatenatedNFA.addNodes(nfa2.getStates());
 
     // Set the start state to the start state of nfa1
     concatenatedNFA.startState = nfa1.startState;
@@ -161,20 +153,16 @@ NFA NFA::plusNFA(NFA nfa1) {
 }
 
 void NFA::addNode(Node* nodeToAdd) {
-    Node* copiedNode = new Node(nodeToAdd->getIdentifier());
+    // Node* copiedNode = new Node(nodeToAdd->getIdentifier());
 
-    std::cout << "Creating a node with id: " << copiedNode->getIdentifier() << std::endl;
-
-    nodes.push_back(copiedNode);
+    nodes.push_back(nodeToAdd);
 }
 
 void NFA::addNodes(const vector<Node*>& nodesToAdd) {
     for(auto node : nodesToAdd) {
-        Node* copiedNode = new Node(node->getIdentifier());
-        std::cout << "Creating a node with id: " << node->getIdentifier() << std::endl;
+        // Node* copiedNode = new Node(node->getIdentifier());
 
-
-        nodes.push_back(copiedNode);
+        nodes.push_back(node);
     }
 }
 
