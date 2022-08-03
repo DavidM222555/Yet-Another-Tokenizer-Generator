@@ -11,8 +11,7 @@
 
 int main() {
 
-    NFA nfa = generateNFAFromRegex("(abc)*");
-
+    NFA nfa = generateNFAFromRegex("(abc)*cde(fg)*");
     NFA aNFA = NFA::characterNFA('a');
 
     return 0;

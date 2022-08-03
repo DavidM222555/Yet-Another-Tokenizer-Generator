@@ -10,7 +10,6 @@ Node::Node(unsigned int identifier) {
 }
 
 
-
 void Node::addTransitionState(char transChar, Node *transitionState) {
 
     if(transitionStates.count(transChar) == 0) {

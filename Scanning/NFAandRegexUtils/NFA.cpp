@@ -14,7 +14,7 @@ unsigned int NFA::nodeCount = 0;
 
 NFA::~NFA() {
     for (auto node : nodes) {
-        std::cout << "Deleting a node " << std::endl;
+        std::cout << "Deleting a node with id: " << node->getIdentifier() << std::endl;
         delete node;
     }
 }
@@ -158,12 +158,16 @@ NFA NFA::plusNFA(NFA nfa1) {
 }
 
 void NFA::addNode(Node* nodeToAdd) {
-    nodes.push_back(nodeToAdd);
+    Node* copiedNode = new Node(nodeToAdd->getIdentifier());
+
+    nodes.push_back(copiedNode);
 }
 
 void NFA::addNodes(const vector<Node*>& nodesToAdd) {
     for(auto node : nodesToAdd) {
-        nodes.push_back(node);
+        Node* copiedNode = new Node(node->getIdentifier());
+
+        nodes.push_back(copiedNode);
     }
 }
 
