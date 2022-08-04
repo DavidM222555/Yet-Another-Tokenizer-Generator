@@ -3,6 +3,7 @@
 //
 
 #include "NFAandRegexUtils/NFA.h"
+#include "FileHandling/Lexeme.h"
 
 #include <string>
 #include <iostream>
@@ -12,6 +13,8 @@
 #include <stack>
 #include <queue>
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "LocalValueEscapesScope"
 using std::string;
 using std::unordered_set;
 using std::find;
@@ -120,7 +123,6 @@ string addConcatOperators(string stringToConvert) {
     }
 
     returnString += stringToConvert[stringToConvert.size() - 1];
-
     return returnString;
 }
 
@@ -229,3 +231,32 @@ NFA generateNFAFromRegex(string regex) {
 
     return nfaStack.top();
 }
+
+NFA generateNFAfromLexemes(vector<Lexeme> listOfLexemes) {
+    NFA returnNFA;
+    vector<AcceptState> acceptStates;
+
+
+    if (!listOfLexemes.empty()) {
+        auto regex = listOfLexemes[0].getRegex();
+        returnNFA = generateNFAFromRegex(regex);
+
+        auto acceptState = AcceptState(listOfLexemes[0], returnNFA.getAcceptState());
+        acceptStates.push_back(acceptState);
+    }
+
+    for (int i = 1; i < listOfLexemes.size(); i++) {
+        auto regex = listOfLexemes[i].getRegex();
+        auto nfaToUnionWith = generateNFAFromRegex(regex);
+
+        returnNFA = NFA::unionedNFA(returnNFA, nfaToUnionWith);
+
+        auto acceptState = AcceptState(listOfLexemes[i], returnNFA.getAcceptState());
+        acceptStates.push_back(acceptState);
+    }
+
+    returnNFA.setAcceptStates(acceptStates);
+
+    return returnNFA;
+}
+#pragma clang diagnostic pop

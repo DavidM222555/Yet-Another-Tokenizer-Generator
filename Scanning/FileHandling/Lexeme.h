@@ -7,6 +7,7 @@
 
 #include <string>
 #include <utility>
+#include <iostream>
 
 using std::string;
 
@@ -23,6 +24,8 @@ public:
         precedence = mPrecedence;
     }
 
+    Lexeme() {precedence = 0;}
+
     inline string getLabel() { return label; }
     inline string getRegex() { return regex; }
 
@@ -32,5 +35,6 @@ public:
     " Regex: " << regex << " Precedence: " << precedence << "\n"; }
 
 };
+
 
 #endif //ENGINEERING_A_COMPILER_LEXEME_H

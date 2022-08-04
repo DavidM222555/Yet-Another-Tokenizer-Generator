@@ -15,9 +15,10 @@ vector<Node*> NFA::staticNodes;
 
 void NFA::cleanUpStaticNodes() {
     for (auto node : staticNodes) {
-        std::cout << node->getIdentifier() << std::endl;
         delete node;
     }
+
+    std::cout << "Successfully deleted all nodes\n";
 }
 
 NFA NFA::characterNFA(char transChar) {
@@ -65,7 +66,7 @@ NFA NFA::unionedNFA(NFA nfa1, NFA nfa2) {
     return unionedNFA;
 }
 
-NFA NFA::concatenatedNFA(NFA nfa1, NFA nfa2) {
+NFA NFA::concatenatedNFA(NFA nfa1, const NFA& nfa2) {
     NFA concatenatedNFA;
 
     // Set the start state to the start state of nfa1
@@ -162,22 +163,7 @@ Node *NFA::getAcceptState() {
 }
 
 
-string NFA::getLabel(Node *nodeToFind) {
-    for (auto acceptState : acceptStates) {
-        if (acceptState.getNode() == nodeToFind) {
-            return acceptState.getLabel();
-        }
-    }
-
-    return "";
-}
-
-void NFA::addAcceptState(string label, Node* nodeToAdd) {
-    auto newAcceptState = AcceptState(std::move(label), nodeToAdd);
-    acceptStates.push_back(newAcceptState);
-}
-
-vector<AcceptState> NFA::getAcceptStates() {
-    return acceptStates;
+void NFA::setAcceptStates(vector<AcceptState> fAcceptStates) {
+    acceptStates = std::move(fAcceptStates);
 }
 

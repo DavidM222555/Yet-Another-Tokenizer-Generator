@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.18)
 project(Engineering_a_Compiler)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -14,4 +14,4 @@ add_executable(Engineering_a_Compiler
         Scanning/NFAandRegexUtils/ScanHelper.h
         Scanning/NFAandRegexUtils/AcceptState.h
         Scanning/FileHandling/FileReader.cpp Scanning/FileHandling/FileReader.h
-        Scanning/FileHandling/Lexeme.h)
+        Scanning/FileHandling/Lexeme.h Scanning/FileHandling/Token.h Scanning/FileHandling/TokenHelper.h)

@@ -1,0 +1,30 @@
+//
+// Created by dpmar on 8/3/2022.
+//
+
+#ifndef ENGINEERING_A_COMPILER_TOKEN_H
+#define ENGINEERING_A_COMPILER_TOKEN_H
+
+#include <string>
+#include "FileHandling/Lexeme.h"
+
+using std::string;
+
+class Token {
+private:
+    Lexeme lexemeForToken;
+    string tokenString;
+
+public:
+    Token(Lexeme mLexemeForToken, string mTokenString) {
+        mLexemeForToken = lexemeForToken;
+        tokenString = mTokenString;
+    }
+
+    inline Lexeme getLexemeForToken() { return lexemeForToken; };
+    inline string getTokenString() { return tokenString; }
+
+};
+
+
+#endif //ENGINEERING_A_COMPILER_TOKEN_H

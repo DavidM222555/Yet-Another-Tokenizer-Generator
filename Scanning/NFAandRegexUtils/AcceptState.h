@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "Node.h"
+#include "FileHandling/Lexeme.h"
 
 using std::string;
 
@@ -16,13 +17,16 @@ using std::string;
 // Will be used for determining the token that a lexeme corresponds to
 class AcceptState {
 private:
-    string label;
+    Lexeme lexeme;
     Node* nodeForAcceptState{};
 
 public:
-    AcceptState(string sLabel, Node* sNodeForAcceptState) { label = std::move(sLabel); nodeForAcceptState = sNodeForAcceptState; }
+    AcceptState(Lexeme mLexeme, Node* mNodeForAcceptance) {
+        lexeme = std::move(mLexeme);
+        nodeForAcceptState = mNodeForAcceptance;
+    }
 
-    inline string getLabel() { return label; }
+    inline Lexeme getLexeme() { return lexeme; }
     inline Node* getNode() { return nodeForAcceptState; }
 };
 

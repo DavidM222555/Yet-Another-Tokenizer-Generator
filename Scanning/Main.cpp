@@ -3,17 +3,22 @@
 //
 
 #include "NFAandRegexUtils/Node.h"
-#include "NFAandRegexUtils/NFA.h"
 #include "NFAandRegexUtils/ScanHelper.h"
 #include "FileHandling/FileReader.h"
+#include "FileHandling/TokenHelper.h"
 
 int main() {
+    FileReader fr;
 
-    NFA nfa = generateNFAFromRegex("(a+b)*cde*");
+    auto lexemes = fr.getLexemesFromFile("Scanning/TestInputs/TestInput1.txt");
+    fr.printLexemes();
+    auto nfaForLexemes = generateNFAfromLexemes(lexemes);
+    std::cout << "Result: " << scanString(nfaForLexemes, "ccccccccc") << std::endl;
 
-    std::cout << scanString(nfa, "abbbbbcdee") << std::endl;
+    getTokensFromText(nfaForLexemes, "blehhhh");
 
     NFA::cleanUpStaticNodes();
+
 
     return 0;
 }

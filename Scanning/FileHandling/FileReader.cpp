@@ -3,11 +3,10 @@
 //
 
 #include "FileReader.h"
-
 #include <sstream>
 #include <vector>
 
-void FileReader::getLexemesFromFile(const string& fileName) {
+vector<Lexeme> FileReader::getLexemesFromFile(const string& fileName) {
     std::ifstream readFile (fileName);
 
     // Used for detecting when we have found the start of the lexeme specification in the file
@@ -50,9 +49,10 @@ void FileReader::getLexemesFromFile(const string& fileName) {
 
                 lexemes.push_back(lexemeToAdd);
             }
-
         }
     }
+
+    return lexemes;
 }
 
 void FileReader::printLexemes() {

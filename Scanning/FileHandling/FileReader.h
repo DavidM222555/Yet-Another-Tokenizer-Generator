@@ -20,7 +20,7 @@ private:
     vector<Lexeme> lexemes;
 
 public:
-    void getLexemesFromFile(const string& fileName);
+    vector<Lexeme> getLexemesFromFile(const string& fileName);
     void printLexemes();
 };
 
