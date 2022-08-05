@@ -208,10 +208,13 @@ NFA generateNFAFromRegex(string regex) {
     return nfaStack.top();
 }
 
+// Takes in a list of lexemes and produces the NFA for recognizing any regex corresponding to any lexeme.
 NFA generateNFAfromLexemes(vector<Lexeme> listOfLexemes) {
     NFA returnNFA;
     vector<AcceptState> acceptStates;
 
+    // We have to begin by getting the first lexeme and giving our returnNFA an initial value that we will
+    // use to union with the other NFAs
     if (!listOfLexemes.empty()) {
         auto regex = listOfLexemes[0].getRegex();
         returnNFA = generateNFAFromRegex(regex);
@@ -220,14 +223,15 @@ NFA generateNFAfromLexemes(vector<Lexeme> listOfLexemes) {
         acceptStates.push_back(acceptState);
     }
 
+    // Iterate through the other lexemes and progressively union them into our returnNFA
     for (int i = 1; i < listOfLexemes.size(); i++) {
         auto regex = listOfLexemes[i].getRegex();
         auto nfaToUnionWith = generateNFAFromRegex(regex);
 
         returnNFA = NFA::unionedNFA(returnNFA, nfaToUnionWith);
 
+        // We need to keep track of what the accept state of this NFA was so we can use it for tokenizing later
         auto acceptState = AcceptState(listOfLexemes[i], nfaToUnionWith.getAcceptState());
-
         acceptStates.push_back(acceptState);
     }
 

@@ -15,7 +15,7 @@ int main() {
     auto lexemes = fr.getLexemesFromFile("Scanning/TestInputs/TestInput1.txt");
     fr.printLexemes();
     auto nfaForLexemes = generateNFAfromLexemes(lexemes);
-    auto tokensFromFile = getTokensFromText(nfaForLexemes, "3 PLUS 4 PLUS 5 SUB 3");
+    auto tokensFromFile = getTokensFromText(nfaForLexemes, "WHILE [3 <= 4] 3 PLUS 4 PLUS 5 SUB 3; WHILE 4 PLUS 3");
 
     for (auto token : tokensFromFile) {
         std::cout << "Lexeme: " << token.getLexemeForToken().getLabel() << " with token: " << token.getTokenString() << std::endl;

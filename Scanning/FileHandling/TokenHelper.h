@@ -72,6 +72,7 @@ vector<Token> getTokensFromText(NFA nfaForTokenization, string stringToScan) {
         }
 
         if (prevStateSize == 0 && currentStates.size() == 0) {
+            std::cout << "Parse error at index = " << i << std::endl;
             break;
         }
 

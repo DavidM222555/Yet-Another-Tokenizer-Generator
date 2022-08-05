@@ -13,13 +13,11 @@ using std::unordered_map;
 
 class Node {
 private:
-
     unordered_map<char, vector<Node*>> transitionStates;
     vector<Node*> epsilonTransitions;
     unsigned int identifier;
 
 public:
-
     Node(unsigned int identifier);
 
     // Add a transition state from one node to another along a given transition character
