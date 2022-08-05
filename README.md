@@ -7,11 +7,13 @@ Currently I have implemented the basics for user generated patterns for lexemes 
 # File Specification
 For the lexer to properly recognize your lexeme specifications it must 
 follow this basic format: <br/>
-[Any amount of white space or newlines] <br/>
-$LEXEMES <br/>
-LexemeLabel,RegexForLexeme,Precedence <br/>
-... <br/>
+```
+[Any amount of white space or newlines]
+$LEXEMES
+LexemeLabel,RegexForLexeme,Precedence
+...
 $$LEXEMES
+```
 
 # Utilities
 - Can tokenize basic alphanumeric regex strings such as (1|2...)* and (a|b|c...)*. For this see the example main program 
