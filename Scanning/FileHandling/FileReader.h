@@ -20,7 +20,15 @@ private:
     vector<Lexeme> lexemes;
 
 public:
+    // Scans a file with the given name and generates lexemes based off the content of the text.
+    // Lexeme files should have the following form:
+    // $LEXEMES
+    // LexemeName,Regex,Precedence
+    // ...
+    // $$LEXEMES
     vector<Lexeme> getLexemesFromFile(const string& fileName);
+
+    // Simple helper function for printing the lexemes we currently have
     void printLexemes();
 };
 

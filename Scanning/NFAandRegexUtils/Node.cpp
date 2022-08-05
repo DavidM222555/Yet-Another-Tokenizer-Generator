@@ -8,9 +8,10 @@ Node::Node(unsigned int identifier) {
     this->identifier = identifier;
 }
 
-
 void Node::addTransitionState(char transChar, Node *transitionState) {
 
+    // If we haven't encountered a transition along this character yet
+    // then we have to initialize it in our map
     if(transitionStates.count(transChar) == 0) {
         vector<Node *> newStates;
         newStates.push_back(transitionState);
@@ -20,6 +21,7 @@ void Node::addTransitionState(char transChar, Node *transitionState) {
         return;
     }
 
+    // Otherwise we just append at the value vector for that character
     transitionStates.at(transChar).push_back(transitionState);
 }
 

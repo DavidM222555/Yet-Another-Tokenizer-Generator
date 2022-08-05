@@ -15,7 +15,6 @@ int main() {
     auto lexemes = fr.getLexemesFromFile("Scanning/TestInputs/TestInput1.txt");
     fr.printLexemes();
     auto nfaForLexemes = generateNFAfromLexemes(lexemes);
-
     auto tokensFromFile = getTokensFromText(nfaForLexemes, "3 PLUS 4 PLUS 5 SUB 3");
 
     for (auto token : tokensFromFile) {

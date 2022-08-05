@@ -14,6 +14,9 @@
 using std::vector;
 using std::find;
 
+/*
+ * Scans through a given string with nfaForTokenization and returns a vector of tokens within that text
+ */
 vector<Token> getTokensFromText(NFA nfaForTokenization, string stringToScan) {
     vector<Token> returnTokens;
 

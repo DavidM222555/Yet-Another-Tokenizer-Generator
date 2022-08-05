@@ -117,7 +117,6 @@ NFA NFA::kleeneNFA(NFA nfa1) {
 }
 
 
-
 vector<Node*> NFA::getEpsilonTransitionStates(const vector<Node*>& startNodes) {
     vector<Node*> returnVector;
 
@@ -187,10 +186,6 @@ Node *NFA::getAcceptState() {
 
 void NFA::setAcceptStates(vector<AcceptState> fAcceptStates) {
     acceptStates = std::move(fAcceptStates);
-}
-
-vector<AcceptState> NFA::getAcceptStates() {
-    return acceptStates;
 }
 
 vector<Node *> NFA::getEpsilonClosure(vector<Node*> startStates) {

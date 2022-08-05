@@ -22,7 +22,7 @@ using std::find;
 std::unordered_map<char, int> precedenceMap = {
         {'*', 3},
         {'.', 2},
-        {'+', 1},
+        {'|', 1},
         {'(', 0},
         {')', 0}
 };
@@ -65,7 +65,7 @@ bool isOperator(char opToTest) {
     return precedenceMap.find(opToTest) != precedenceMap.end();
 }
 
-// This makes concatenation explicit for stringToConvert
+// This makes concatenation explicit for stringToConvert -- for instance 'ab' is translated to 'a.b'
 string addConcatOperators(string stringToConvert) {
     string returnString;
 
@@ -92,6 +92,7 @@ string addConcatOperators(string stringToConvert) {
     return returnString;
 }
 
+// Shunting-Yard algorithm below here
 string convertToPostfix(const string& regex) {
     std::queue<char> outputQueue;
     std::stack<char> operatorStack;
@@ -153,7 +154,13 @@ string convertToPostfix(const string& regex) {
     return returnString;
 }
 
-
+// Generates an NFA from a regex by first converting the regex to postfix and then building a stack
+// from the NFAs represented by working through the postfix regex.
+// Consider the simple regex ab. (which is in postfix notation).
+// It works from right to left, first making a character NFA for a, then a character NFA for b, and then when it
+// encounters '.', which is the operator for concatenation, it pops two NFAs off the stack and creates a concat NFA
+// for those two items. For the unary Kleene operator it simply just pops the top element, performs the transformation,
+// and then pushes back to the stack.
 NFA generateNFAFromRegex(string regex) {
     NFA regexNFA;
     std::stack<NFA> nfaStack;
@@ -186,7 +193,7 @@ NFA generateNFAFromRegex(string regex) {
 
                 NFA concatenatedNFA = NFA::concatenatedNFA(concatNFA2, concatNFA1);
                 nfaStack.push(concatenatedNFA);
-            } else if (ch == '+') {
+            } else if (ch == '|') {
                 NFA unionedNFA1 = nfaStack.top();
                 nfaStack.pop();
                 NFA unionedNFA2 = nfaStack.top();

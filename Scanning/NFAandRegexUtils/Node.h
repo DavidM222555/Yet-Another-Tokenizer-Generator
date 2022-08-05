@@ -22,9 +22,12 @@ public:
 
     Node(unsigned int identifier);
 
+    // Add a transition state from one node to another along a given transition character
     void addTransitionState(char transChar, Node* transitionState);
     vector<Node*> getTransitionStates(char transChar);
 
+    // Add an epsilon transition from one state to another -- these are states
+    // that are always reachable from another no matter the current character being scanned
     void addEpsilonTransition(Node* transitionState);
     vector<Node*> getEpsilonTransitionStates();
 
