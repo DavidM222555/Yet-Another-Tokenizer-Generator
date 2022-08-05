@@ -8,10 +8,10 @@ Currently I have implemented the basics for user generated patterns for lexemes 
 For the lexer to properly recognize your lexeme specifications it must 
 follow this basic format: <br/>
 ```
-[Any amount of white space or newlines] <br/>
-$LEXEMES <br/>
-LexemeLabel,RegexForLexeme,Precedence <br/>
-... <br/>
+[Any amount of white space or newlines]
+$LEXEMES
+LexemeLabel,RegexForLexeme,Precedence
+...
 $$LEXEMES
 ```
 
