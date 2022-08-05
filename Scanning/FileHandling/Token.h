@@ -21,6 +21,8 @@ public:
         tokenString = mTokenString;
     }
 
+    Token() { lexemeForToken = Lexeme(); tokenString = ""; }
+
     inline Lexeme getLexemeForToken() { return lexemeForToken; };
     inline string getTokenString() { return tokenString; }
 

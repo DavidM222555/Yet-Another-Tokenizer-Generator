@@ -27,6 +27,7 @@ std::unordered_map<char, int> precedenceMap = {
         {')', 0}
 };
 
+// Simulates an NFA on a given string and outputs whether the NFA ends in an accept state
 bool scanString(NFA scannerNFA, const string& stringToScan) {
     auto startNode = scannerNFA.getStartState();
     auto epsilonStates = startNode->getEpsilonTransitionStates();
@@ -38,23 +39,7 @@ bool scanString(NFA scannerNFA, const string& stringToScan) {
     currentStates.push_back(startNode);
 
     for (auto &ch : stringToScan) {
-        while (true) {
-            unsigned long long currentNumberOfStates = currentStates.size();
-
-            for (std::vector<Node*>::size_type i = 0; i < currentNumberOfStates; i++) {
-                auto currentNode = currentStates[i];
-
-                for (auto epsilonReachableNode : currentNode->getEpsilonTransitionStates()) {
-                    if (std::find(currentStates.begin(), currentStates.end(), epsilonReachableNode) == currentStates.end()) {
-                        currentStates.push_back(epsilonReachableNode);
-                    }
-                }
-            }
-
-            if(currentNumberOfStates == currentStates.size()) {
-                break;
-            }
-        }
+        currentStates = scannerNFA.getEpsilonClosure(currentStates);
 
         auto charTransStates = NFA::getTransitionStates(currentStates, ch);
 
@@ -64,26 +49,7 @@ bool scanString(NFA scannerNFA, const string& stringToScan) {
 
         currentStates = NFA::getTransitionStates(currentStates, ch);
 
-        auto epsilonStatesFromCurrentStates = NFA::getEpsilonTransitionStates(currentStates);
-
-        while (true) {
-            unsigned long long currentNumberOfStates = currentStates.size();
-
-            for (std::vector<Node*>::size_type i = 0; i < currentNumberOfStates; i++) {
-                auto currentNode = currentStates[i];
-
-                for (auto epsilonReachableNode : currentNode->getEpsilonTransitionStates()) {
-                    if (std::find(currentStates.begin(), currentStates.end(), epsilonReachableNode) == currentStates.end()) {
-                        currentStates.push_back(epsilonReachableNode);
-                    }
-                }
-            }
-
-            if(currentNumberOfStates == currentStates.size()) {
-                break;
-            }
-        }
-
+        currentStates = scannerNFA.getEpsilonClosure(currentStates);
     }
 
     for (auto node : currentStates) {
@@ -107,10 +73,10 @@ string addConcatOperators(string stringToConvert) {
 
     for (auto i = 0; i < stringToConvert.size(); i++) {
         if(i + 1 < stringToConvert.size()) {
-            bool leftCharFlag = isalnum(stringToConvert[i]) || stringToConvert[i] == ')'
+            bool leftCharFlag = !isOperator(stringToConvert[i]) || stringToConvert[i] == ')'
                     || stringToConvert[i] == '*';
 
-            bool letterOrDigitFlag = isalnum(stringToConvert[i + 1]);
+            bool letterOrDigitFlag = !isOperator(stringToConvert[i + 1]);
             bool rightCharFlag = letterOrDigitFlag || (stringToConvert[i + 1] == '(');
 
             if(leftCharFlag && rightCharFlag) {
@@ -127,16 +93,13 @@ string addConcatOperators(string stringToConvert) {
 }
 
 string convertToPostfix(const string& regex) {
-
     std::queue<char> outputQueue;
     std::stack<char> operatorStack;
 
+    for (auto i = 0; i < regex.size(); i++) {
+        auto ch = regex[i];
 
-    for (auto &ch : regex) {
-        if (isalnum(ch)) {
-            outputQueue.push(ch);
-        }
-        else if (ch == '(') {
+        if (ch == '(') {
             operatorStack.push(ch);
         }
         else if (ch == ')') {
@@ -170,6 +133,9 @@ string convertToPostfix(const string& regex) {
                 operatorStack.push(ch);
             }
         }
+        else {
+            outputQueue.push(ch);
+        }
     }
 
     while(!operatorStack.empty()) {
@@ -187,6 +153,7 @@ string convertToPostfix(const string& regex) {
     return returnString;
 }
 
+
 NFA generateNFAFromRegex(string regex) {
     NFA regexNFA;
     std::stack<NFA> nfaStack;
@@ -195,10 +162,12 @@ NFA generateNFAFromRegex(string regex) {
     regex = addConcatOperators(regex);
     regex = convertToPostfix(regex);
 
-    std::cout << "Regex string: " << regex << std::endl;
+    std::cout << "Regex: " << regex << std::endl;
 
-    for (auto& ch : regex) {
-        if (isalnum(ch)) {
+    for (auto i = 0; i < regex.size(); i++) {
+        auto ch = regex[i];
+
+        if (!isOperator(ch)) {
             NFA charNFA = NFA::characterNFA(ch);
             nfaStack.push(charNFA);
         }
@@ -236,7 +205,6 @@ NFA generateNFAfromLexemes(vector<Lexeme> listOfLexemes) {
     NFA returnNFA;
     vector<AcceptState> acceptStates;
 
-
     if (!listOfLexemes.empty()) {
         auto regex = listOfLexemes[0].getRegex();
         returnNFA = generateNFAFromRegex(regex);
@@ -251,7 +219,8 @@ NFA generateNFAfromLexemes(vector<Lexeme> listOfLexemes) {
 
         returnNFA = NFA::unionedNFA(returnNFA, nfaToUnionWith);
 
-        auto acceptState = AcceptState(listOfLexemes[i], returnNFA.getAcceptState());
+        auto acceptState = AcceptState(listOfLexemes[i], nfaToUnionWith.getAcceptState());
+
         acceptStates.push_back(acceptState);
     }
 
@@ -259,4 +228,5 @@ NFA generateNFAfromLexemes(vector<Lexeme> listOfLexemes) {
 
     return returnNFA;
 }
+
 #pragma clang diagnostic pop

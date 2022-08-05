@@ -36,10 +36,18 @@ public:
     static vector<Node*> getTransitionStates(const vector<Node*>& startNodes, char transChar);
     static vector<Node*> getEpsilonTransitionStates(const vector<Node*>& startNodes);
 
+    bool inAnAcceptState(Node* nodeToTest);
+    vector<AcceptState> getAcceptStatesIn(vector<Node*> nodesToTest);
+
     Node* getStartState();
     Node* getAcceptState();
 
+    vector<AcceptState> getAcceptStates();
+
     void setAcceptStates(vector<AcceptState> acceptStates);
+
+    // Returns the states reachable along epsilon transitions
+    vector<Node*> getEpsilonClosure(vector<Node*> startStates);
 };
 
 #endif //ENGINEERING_A_COMPILER_NFA_H

@@ -7,18 +7,22 @@
 #include "FileHandling/FileReader.h"
 #include "FileHandling/TokenHelper.h"
 
+#include <iostream>
+
 int main() {
     FileReader fr;
 
     auto lexemes = fr.getLexemesFromFile("Scanning/TestInputs/TestInput1.txt");
     fr.printLexemes();
     auto nfaForLexemes = generateNFAfromLexemes(lexemes);
-    std::cout << "Result: " << scanString(nfaForLexemes, "ccccccccc") << std::endl;
 
-    getTokensFromText(nfaForLexemes, "blehhhh");
+    auto tokensFromFile = getTokensFromText(nfaForLexemes, "3 PLUS 4 PLUS 5 SUB 3");
+
+    for (auto token : tokensFromFile) {
+        std::cout << "Lexeme: " << token.getLexemeForToken().getLabel() << " with token: " << token.getTokenString() << std::endl;
+    }
 
     NFA::cleanUpStaticNodes();
-
 
     return 0;
 }

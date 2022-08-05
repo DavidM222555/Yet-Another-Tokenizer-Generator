@@ -153,6 +153,28 @@ vector<Node*> NFA::getTransitionStates(const vector<Node*>& startNodes, char tra
     return returnVector;
 }
 
+bool NFA::inAnAcceptState(Node* nodeToTest) {
+    for (auto acceptState : acceptStates) {
+        if (acceptState.getNode() == nodeToTest) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+vector<AcceptState> NFA::getAcceptStatesIn(vector<Node*> nodesToTest) {
+    vector<AcceptState> acceptStatesIn;
+
+    for (auto acceptState : acceptStates) {
+        if (std::count(nodesToTest.begin(), nodesToTest.end(), acceptState.getNode())) {
+            acceptStatesIn.push_back(acceptState);
+        }
+
+    }
+
+    return acceptStatesIn;
+}
 
 Node *NFA::getStartState() {
     return startState;
@@ -165,5 +187,36 @@ Node *NFA::getAcceptState() {
 
 void NFA::setAcceptStates(vector<AcceptState> fAcceptStates) {
     acceptStates = std::move(fAcceptStates);
+}
+
+vector<AcceptState> NFA::getAcceptStates() {
+    return acceptStates;
+}
+
+vector<Node *> NFA::getEpsilonClosure(vector<Node*> startStates) {
+
+    auto currentStates = startStates;
+
+    while (true) {
+        unsigned long long currentNumberOfStates = currentStates.size();
+
+        for (std::vector<Node*>::size_type i = 0; i < currentNumberOfStates; i++) {
+            auto currentNode = currentStates[i];
+
+            for (auto epsilonReachableNode : currentNode->getEpsilonTransitionStates()) {
+                if (std::find(currentStates.begin(), currentStates.end(), epsilonReachableNode) == currentStates.end()) {
+                    currentStates.push_back(epsilonReachableNode);
+                }
+            }
+        }
+
+        // If we have not added any more states then we have reached all epsilon states,
+        // this is because an epsilon closure is a monotonically increasing sequence
+        if(currentNumberOfStates == currentStates.size()) {
+            break;
+        }
+    }
+
+    return currentStates;
 }
 
