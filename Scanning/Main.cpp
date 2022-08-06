@@ -15,7 +15,7 @@ int main() {
     auto lexemes = fr.getLexemesFromFile("Scanning/TestInputs/TestInput1.txt");
 
     auto nfaForLexemes = generateNFAfromLexemes(lexemes);
-    auto tokensFromFile = getTokensFromText(nfaForLexemes, "VAR X = 33 PLUS 44; WHILE [TRUE AND FALSE]: VAR Y = 33");
+    auto tokensFromFile = getTokensFromText(nfaForLexemes, "VAR X = 33 PLUS 44; WHILE [TRUE AND FALSE]: VAR Y = 33;");
 
     runProgram(tokensFromFile);
 

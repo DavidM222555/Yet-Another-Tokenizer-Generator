@@ -14,4 +14,4 @@ add_executable(Engineering_a_Compiler
         Scanning/NFAandRegexUtils/ScanHelper.h
         Scanning/NFAandRegexUtils/AcceptState.h
         Scanning/FileHandling/FileReader.cpp Scanning/FileHandling/FileReader.h
-        Scanning/FileHandling/Lexeme.h Scanning/FileHandling/Token.h Scanning/FileHandling/TokenHelper.h)
+        Scanning/TokenAndLexemeUtils/Lexeme.h Scanning/TokenAndLexemeUtils/Token.h Scanning/TokenAndLexemeUtils/TokenHelper.h Scanning/ParserFuncs/RecursiveDescentParser.h)
