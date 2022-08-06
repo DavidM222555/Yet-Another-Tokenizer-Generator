@@ -8,7 +8,6 @@
 #include "TokenAndLexemeUtils/TokenHelper.h"
 #include "ParserFuncs/RecursiveDescentParser.h"
 
-#include <iostream>
 
 int main() {
     FileReader fr;
