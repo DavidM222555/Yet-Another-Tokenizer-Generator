@@ -3,7 +3,7 @@
 //
 
 #include "NFAandRegexUtils/NFA.h"
-#include "FileHandling/Lexeme.h"
+#include "TokenAndLexemeUtils/Lexeme.h"
 
 #include <string>
 #include <iostream>
@@ -168,8 +168,6 @@ NFA generateNFAFromRegex(string regex) {
     // First add concatenation operator and then convert to postfix
     regex = addConcatOperators(regex);
     regex = convertToPostfix(regex);
-
-    std::cout << "Regex: " << regex << std::endl;
 
     for (auto i = 0; i < regex.size(); i++) {
         auto ch = regex[i];

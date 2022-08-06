@@ -2,8 +2,9 @@
 $LEXEMES
 For,FOR,1
 Plus,PLUS,1
-Sub,SUB,1
-Div,DIV,1
+Subtract,SUB,1
+Divide,DIV,1
+Modulus,MOD,1
 Number,(0|1|2|3|4|5|6|7|8|9)*,1
 LBracket,[,1
 RBracket,],1
@@ -14,4 +15,15 @@ GT,>,1
 LTE,<=,1
 GTE,>=,1
 Var,VAR,1
+Colon,:,1
+Equal,=,1
+VariableName,(x|X|y|Y|z|Z)*,1
+PlusEq,+=,1
+End,END,1
+Increment,++,1
+Decrement,--,1
+True,TRUE,1
+False,FALSE,1
+And,AND,1
+Or,OR,1
 $$LEXEMES

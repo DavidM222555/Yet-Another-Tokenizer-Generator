@@ -6,7 +6,7 @@
 #define ENGINEERING_A_COMPILER_TOKEN_H
 
 #include <string>
-#include "FileHandling/Lexeme.h"
+#include "Lexeme.h"
 
 using std::string;
 
@@ -17,7 +17,7 @@ private:
 
 public:
     Token(Lexeme mLexemeForToken, string mTokenString) {
-        mLexemeForToken = lexemeForToken;
+        lexemeForToken = mLexemeForToken;
         tokenString = mTokenString;
     }
 

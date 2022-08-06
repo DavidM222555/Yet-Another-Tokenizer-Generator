@@ -10,7 +10,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "Lexeme.h"
+#include "TokenAndLexemeUtils/Lexeme.h"
 
 using std::string;
 using std::vector;

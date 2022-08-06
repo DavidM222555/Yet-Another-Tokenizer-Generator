@@ -10,7 +10,7 @@
 
 #include "Node.h"
 #include "NFAandRegexUtils/AcceptState.h"
-#include "FileHandling/Lexeme.h"
+#include "TokenAndLexemeUtils/Lexeme.h"
 
 using std::vector;
 using std::string;

@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "Node.h"
-#include "FileHandling/Lexeme.h"
+#include "TokenAndLexemeUtils/Lexeme.h"
 
 using std::string;
 

@@ -8,7 +8,7 @@
 #include <vector>
 #include <algorithm>
 
-#include "Token.h"
+#include "TokenAndLexemeUtils/Token.h"
 #include "NFAandRegexUtils/NFA.h"
 
 using std::vector;
@@ -32,12 +32,10 @@ vector<Token> getTokensFromText(NFA nfaForTokenization, string stringToScan) {
     Token mostRecentToken;
     string currentString;
 
-    auto prevStateSize = -1;
+    auto prevStateSize = currentStates.size();
 
     for (auto i = 0; i < stringToScan.size(); i++) {
         auto ch = stringToScan[i];
-
-        std::cout << "Current char: " << ch << std::endl;
 
         // Ignore whitespace in the program
         if (ch == ' ') {
@@ -71,7 +69,7 @@ vector<Token> getTokensFromText(NFA nfaForTokenization, string stringToScan) {
             }
         }
 
-        if (prevStateSize == 0 && currentStates.size() == 0) {
+        if (prevStateSize == 0 && currentStates.empty()) {
             std::cout << "Parse error at index = " << i << std::endl;
             break;
         }
@@ -80,8 +78,8 @@ vector<Token> getTokensFromText(NFA nfaForTokenization, string stringToScan) {
 
         // If the accept states we are in is empty then we print out the token we got along with
         // resetting the current states to the start node. We also reset the possible token string
-        if (currentStates.size() == 0) {
-            std::cout << "Found an accept state: " << std::endl;
+        if (currentStates.empty()) {
+
             returnTokens.push_back(mostRecentToken);
             currentStates = {startNode};
             currentString = "";
