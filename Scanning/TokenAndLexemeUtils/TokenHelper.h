@@ -14,6 +14,7 @@
 using std::vector;
 using std::find;
 
+
 /*
  * Scans through a given string with nfaForTokenization and returns a vector of tokens within that text
  */
@@ -38,7 +39,7 @@ vector<Token> getTokensFromText(NFA nfaForTokenization, string stringToScan) {
         auto ch = stringToScan[i];
 
         // Ignore whitespace in the program
-        if (ch == ' ') {
+        if (ch == ' ' || ch == '\n' || ch == '\t') {
             continue;
         }
 
@@ -79,7 +80,6 @@ vector<Token> getTokensFromText(NFA nfaForTokenization, string stringToScan) {
         // If the accept states we are in is empty then we print out the token we got along with
         // resetting the current states to the start node. We also reset the possible token string
         if (currentStates.empty()) {
-
             returnTokens.push_back(mostRecentToken);
             currentStates = {startNode};
             currentString = "";
@@ -88,6 +88,31 @@ vector<Token> getTokensFromText(NFA nfaForTokenization, string stringToScan) {
 
         if (i == stringToScan.size() - 1 && !acceptStatesIn.empty()) {
             returnTokens.push_back(mostRecentToken);
+        }
+    }
+
+    return returnTokens;
+}
+
+vector<Token> getTokensFromFile(NFA nfaForLexemes, string filePath) {
+    vector<Token> returnTokens;
+    std::ifstream readFile (filePath);
+
+    if (readFile.is_open()) {
+        string currentLine;
+
+        while (std::getline(readFile, currentLine)) {
+
+            // Method for removing all whitespace from a line
+            currentLine.erase(remove(currentLine.begin(), currentLine.end(), ' '), currentLine.end());
+
+            std::cout << "Line after removing spaces: " << currentLine << std::endl;
+
+            auto tokensFromLine = getTokensFromText(nfaForLexemes, currentLine);
+
+            for (auto token : tokensFromLine) {
+                returnTokens.push_back(token);
+            }
         }
     }
 

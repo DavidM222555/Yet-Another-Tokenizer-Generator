@@ -33,8 +33,17 @@ bool ArithVal();
 bool Assignment();
 bool IfStatement();
 
+string runProgramFromFile(const string& filePath) {
+    std::ifstream readFile (filePath);
+
+}
+
 bool runProgram(vector<Token>& tokens) {
     globalTokens = tokens;
+
+    for (auto token : globalTokens) {
+        std::cout << "Token label: " << token.getLexemeForToken().getLabel() << std::endl;
+    }
 
     if (Start()) {
         std::cout << "Program terminated successfully" << std::endl;
@@ -58,11 +67,9 @@ bool Start() {
             return true;
         }
         else if (Statement()) {
-            std::cout << "While was true" << std::endl;
             continue;
         }
         else {
-
             return false;
         }
     }
@@ -74,10 +81,8 @@ bool Statement() {
     }
     else if(While()) {
         if (Statement()) {
-            std::cout << "In here" << std::endl;
             return true;
         }
-        std::cout << "Out here" << std::endl;
     }
 
     return false;
@@ -104,7 +109,6 @@ bool While() {
 
             auto possibleRightBracket = globalTokens.at(0).getLexemeForToken().getLabel();
             auto possibleColon = globalTokens.at(1).getLexemeForToken().getLabel();
-
 
             if (possibleRightBracket == "RBracket" && possibleColon == "Colon") {
                 globalTokens.erase(globalTokens.begin());
@@ -223,11 +227,6 @@ bool ArithOp() {
 }
 
 bool Assignment() {
-    std::cout << "Assignment operator " << std::endl;
-    for (auto token : globalTokens) {
-        std::cout << token.getLexemeForToken().getLabel() << std::endl;
-    }
-
     if (globalTokens.size() < 3) {
         return false;
     }
@@ -247,9 +246,6 @@ bool Assignment() {
             if (globalTokens.empty()) {
                 return false;
             }
-
-            std::cout << "Here ready to get semicolon" << std::endl;
-            std::cout << "Most recent token: " << globalTokens.at(0).getLexemeForToken().getLabel() << std::endl;
 
             if (globalTokens.at(0).getLexemeForToken().getLabel() == "Semicolon") {
                 globalTokens.erase(globalTokens.begin());

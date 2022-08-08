@@ -151,8 +151,10 @@ string convertToPostfix(const string& regex) {
         outputQueue.pop();
     }
 
+
     return returnString;
 }
+
 
 // Generates an NFA from a regex by first converting the regex to postfix and then building a stack
 // from the NFAs represented by working through the postfix regex.
@@ -205,6 +207,7 @@ NFA generateNFAFromRegex(string regex) {
 
     return nfaStack.top();
 }
+
 
 // Takes in a list of lexemes and produces the NFA for recognizing any regex corresponding to any lexeme.
 NFA generateNFAfromLexemes(vector<Lexeme> listOfLexemes) {
