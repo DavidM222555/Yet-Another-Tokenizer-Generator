@@ -14,11 +14,12 @@ using std::reverse;
 vector<Token> globalTokens;
 
 bool Start();
-bool StartPrime();
 bool Statement();
 
-bool Expr();
 bool While();
+bool EndWhile();
+
+bool If();
 
 bool BoolExpr();
 bool BoolExprPrime();
@@ -33,25 +34,12 @@ bool ArithVal();
 bool Assignment();
 bool IfStatement();
 
-string runProgramFromFile(const string& filePath) {
-    std::ifstream readFile (filePath);
-
-}
 
 bool runProgram(vector<Token>& tokens) {
     globalTokens = tokens;
 
-    for (auto token : globalTokens) {
-        std::cout << "Token label: " << token.getLexemeForToken().getLabel() << std::endl;
-    }
-
     if (Start()) {
         std::cout << "Program terminated successfully" << std::endl;
-        std::cout << "Tokens left: " << std::endl;
-
-        for (auto token : globalTokens) {
-            std::cout << "Token label: " << token.getLexemeForToken().getLabel() << std::endl;
-        }
 
         return true;
     } else {
@@ -63,7 +51,9 @@ bool runProgram(vector<Token>& tokens) {
 
 bool Start() {
     while (true) {
+
         if (globalTokens.empty()) {
+            std::cout << "Here in returning true hopefully " << std::endl;
             return true;
         }
         else if (Statement()) {
@@ -75,14 +65,27 @@ bool Start() {
     }
 }
 
+bool StatementList() {
+    if (Statement()) {
+        return StatementList();
+    }
+
+    return true;
+}
+
 bool Statement() {
     if (Assignment()) {
         return true;
     }
-    else if(While()) {
-        if (Statement()) {
-            return true;
+    else if (While()) {
+        if(StatementList()) {
+            if (EndWhile()) {
+                return true;
+            }
         }
+    }
+    else if (If()) {
+        return true;
     }
 
     return false;
@@ -113,6 +116,7 @@ bool While() {
             if (possibleRightBracket == "RBracket" && possibleColon == "Colon") {
                 globalTokens.erase(globalTokens.begin());
                 globalTokens.erase(globalTokens.begin());
+
                 return true;
             }
         }
@@ -210,6 +214,24 @@ bool ArithVal() {
     return false;
 }
 
+bool EndWhile() {
+    if (globalTokens.size() < 2) {
+        return false;
+    }
+
+    auto expectedEnd = globalTokens.at(0).getLexemeForToken().getLabel();
+    auto expectedWhile = globalTokens.at(1).getLexemeForToken().getLabel();
+
+    if (expectedEnd == "End" && expectedWhile == "While") {
+        globalTokens.erase(globalTokens.begin());
+        globalTokens.erase(globalTokens.begin());
+
+        return true;
+    }
+
+    return false;
+}
+
 bool ArithOp() {
     if (globalTokens.empty()) {
         return false;
@@ -221,6 +243,57 @@ bool ArithOp() {
         || expectedOp == "Modulus") {
         globalTokens.erase(globalTokens.begin());
         return true;
+    }
+
+    return false;
+}
+
+bool If() {
+    if (globalTokens.size() < 2) {
+        return false;
+    }
+
+    auto expectedIf = globalTokens.at(0).getLexemeForToken().getLabel();
+    auto expectedLeftBracket = globalTokens.at(1).getLexemeForToken().getLabel();
+
+    if (expectedIf == "If" && expectedLeftBracket == "LBracket") {
+
+        globalTokens.erase(globalTokens.begin());
+        globalTokens.erase(globalTokens.begin());
+
+        if (BoolExpr()) {
+            if(globalTokens.size() <2) {
+                return false;
+            }
+
+            auto rightBracket = globalTokens.at(0).getLexemeForToken().getLabel();
+            auto expectedColon = globalTokens.at(1).getLexemeForToken().getLabel();
+
+            if (rightBracket == "RBracket" && expectedColon == "Colon") {
+
+                globalTokens.erase(globalTokens.begin());
+                globalTokens.erase(globalTokens.begin());
+
+                if (StatementList()) {
+                    if (globalTokens.size() < 2) {
+                        return false;
+                    }
+
+                    auto eitherEndOrElse = globalTokens.at(0).getLexemeForToken().getLabel();
+
+                    if (eitherEndOrElse == "End") {
+                        globalTokens.erase(globalTokens.begin());
+
+                        auto possibleIf = globalTokens.at(0).getLexemeForToken().getLabel();
+
+                        if (possibleIf == "If") {
+                            globalTokens.erase(globalTokens.begin());
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     return false;

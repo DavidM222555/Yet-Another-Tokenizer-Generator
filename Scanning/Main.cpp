@@ -12,7 +12,7 @@
 int main() {
     FileReader fr;
     auto lexemes = fr.getLexemesFromFile("Scanning/TestInputs/TestLexemes.txt");
-//
+
     auto nfaForLexemes = generateNFAfromLexemes(lexemes);
     auto tokensFromFile = getTokensFromFile(nfaForLexemes,
                                             "Scanning/TestInputs/TestProgram.txt");
